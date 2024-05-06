@@ -43,7 +43,7 @@ class AuthRemoteDataSouceImp implements AuthRemoteDataSource {
       }
       return response.user!.id;
     } catch (e) {
-      print(e);
+      throw ServerException(e.toString());
     }
   }
 }
