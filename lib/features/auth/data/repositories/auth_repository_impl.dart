@@ -1,7 +1,7 @@
 import 'package:bloc_clean_architecture_blog_app/core/error/exception.dart';
 import 'package:bloc_clean_architecture_blog_app/core/error/failure.dart';
 import 'package:bloc_clean_architecture_blog_app/features/auth/data/datasource/auth_remote_data_source.dart';
-import 'package:bloc_clean_architecture_blog_app/features/auth/domain/entities/user.dart';
+import 'package:bloc_clean_architecture_blog_app/core/commen/entities/user.dart';
 import 'package:bloc_clean_architecture_blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sp;
@@ -36,6 +36,20 @@ class AuthRepositoryImpl implements AuthRepository {
       return right(user);
     } on sp.AuthException catch (e) {
       return left(Failure(e.message));
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> currentUser() async {
+    try {
+      final user = await remoteDataSource.getCurrentUserData();
+
+      if (user == null) {
+        return left(Failure('User not logged in'));
+      }
+      return right(user);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }
