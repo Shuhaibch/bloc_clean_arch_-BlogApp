@@ -44,7 +44,21 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.darkThemeMode,
-      home: const SignInPage(),
+      home: BlocSelector<AppUserCubit, AppUserState, bool>(
+        selector: (state) {
+          return state is AppUserLoggedIn;
+        },
+        builder: (context, isLoggedIn) {
+          if (isLoggedIn) {
+            return const Scaffold(
+              body: Center(
+                child: Text('data'),
+              ),
+            );
+          }
+          return const SignInPage();
+        },
+      ),
     );
   }
 }

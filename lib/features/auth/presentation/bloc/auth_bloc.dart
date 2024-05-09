@@ -25,12 +25,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _currentUser = currentUser,
         _userLogin = userLogin,
         super(AuthInitial()) {
+    on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignUp>(_onAuthSignUp);
     on<AuthLogin>(_onAuthLogin);
     on<AuthIsUserLoggedIn>(_isUserLoggedIn);
   }
   void _onAuthSignUp(AuthSignUp event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
     final res = await _userSignUp(UserSignUpParams(
         name: event.name, email: event.email, password: event.password));
     res.fold(
@@ -40,7 +40,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAuthLogin(AuthLogin event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
     final res = await _userLogin(
         UserLoginParams(email: event.email, password: event.password));
     res.fold(
@@ -51,7 +50,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _isUserLoggedIn(
       AuthIsUserLoggedIn event, Emitter<AuthState> emit) async {
-    // emit();
     final res = await _currentUser(NoParam());
     res.fold(
       (l) => emit(AuthFailure(message: l.message)),
