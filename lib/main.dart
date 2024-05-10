@@ -2,6 +2,7 @@ import 'package:bloc_clean_architecture_blog_app/core/commen/cubits/app_user/app
 import 'package:bloc_clean_architecture_blog_app/core/theme/theme.dart';
 import 'package:bloc_clean_architecture_blog_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_clean_architecture_blog_app/features/auth/presentation/pages/sigin_page.dart';
+import 'package:bloc_clean_architecture_blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:bloc_clean_architecture_blog_app/init_depentancies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,10 @@ void main() async {
         ),
         BlocProvider(
           create: (_) => serviceLocator<AuthBloc>(),
-        )
+        ),
+        BlocProvider(
+          create: (_) => serviceLocator<BlogBloc>(),
+        ),
       ],
       child: const MyApp(),
     ),
